@@ -1,0 +1,9 @@
+<label name="playerName">Name:</label>
+<input type="text" ng-model="newPlayerName"></input>
+<button class="btn-primary" ng-click="createPlayer(newPlayerName)">New Player</button>
+<div ng-repeat="player in players">
+  <label>{{player.name}}</label>
+  <button class="btn btn-small btn-danger" ng-click="deletePlayer(player._id)">
+    <i class="icon-trash icon-white"></i>
+  </button>
+</div>

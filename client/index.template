@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" xmlns:ng="http://angularjs.org" xmlns:app="ignored"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"        xmlns:ng="http://angularjs.org" xmlns:app="ignored"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"               xmlns:ng="http://angularjs.org" xmlns:app="ignored"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"                      xmlns:ng="http://angularjs.org" xmlns:app="ignored"> <!--<![endif]-->    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <title>Gintellect</title>
+        <meta name="description" content="Online AI Games Platform"/>
+        <meta name="viewport" content="width=device-width"/>
+        <style>
+            body {
+                padding-top: 60px;
+                padding-bottom: 40px;
+            }
+        </style>
+        <% if (config.environment === 'prod') { %>
+            <link rel="stylesheet" href="/css/styles.min.css?_=v<%= config.uniqueVersion() %>" />
+            <script src="/js/scripts.min.js?_=v<%= config.uniqueVersion() %>"></script>
+        <% } else { %>
+            <link rel="stylesheet" href="/css/styles.css" />
+            <script data-main="/js/main.js" src="/js/libs/require.js"></script>
+        <% } %>
+    </head>
+    <body ng-cloak class="auth" ng-controller="mainController">
+
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+        <![endif]-->
+
+        <!--[if lte IE 8]>
+            <script src="/js/libs/json2.js"></script>
+            <script src="/js/libs/html5shiv-printshiv.js"></script>
+        <![endif]-->
+        
+        <!--[if lt IE 9]>
+            <script src="js/vendor/es5-shim.min.js"></script>
+            <script src="js/vendor/json3.min.js"></script>
+        <![endif]-->
+
+        <!-- Add your site or application content here -->
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/">Gintellect</a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav">
+                            <li class="active"><a href="/">Home</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Games<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/games/noughts-and-crosses">Noughts and Crosses</a></li>
+                                    <li><a href="/games/other">More coming soon...</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown" ng-show="loggedIn">
+                                <a href="#" class="dropdown-toggle", data-toggle="dropdown">{{me.first_name}}<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/user">My Account</a></li>
+                                    <li><a href="/players">My Players</a></li>
+                                    <li><a href="/games">My Games</a></li>
+                                </ul>
+                            </li>
+                            <li ng-hide="loggedIn"><a href="/login">Login</a></li>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+
+        <div class="container" ng-view></div>
+        <!-- endbuild -->
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script type="text/javascript">
+
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-36677163-1']);
+          _gaq.push(['_setDomainName', 'gintellect.com']);
+          _gaq.push(['_setAllowLinker', true]);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+
+        </script>
+    </body>
+</html>
