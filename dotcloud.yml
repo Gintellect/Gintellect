@@ -1,0 +1,10 @@
+www:
+    type: nodejs
+    processes:
+        app: /home/dotcloud/current/node_modules/.bin/coffee ./server/server.coffee
+    config:
+        node_version: v0.8.x 
+    environment:
+        EXPRESS_ENV: production   
+db:
+    type: mongodb

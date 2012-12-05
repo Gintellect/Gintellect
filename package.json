@@ -1,0 +1,26 @@
+{
+  "author": "David Bochenski",
+  "name": "Gintellect",
+  "version": "0.0.1",
+  "main": "./server/server.coffee",
+  "dependencies": {
+    "coffee-script": "~1.4.0",
+    "express": "~3.0.1",
+    "mongoose": "~3.4.0",
+    "passport": "~0.1.15",
+    "passport-facebook": "~0.1.4",
+    "session-mongoose": "~0.2.0",
+    "aws-sdk": "~0.9.0-pre.1"
+  },
+  "devDependencies": {
+    "grunt": "~0.3.17",
+    "grunt-hustler": "~0.7.3",
+    "grunt-contrib-copy": "~0.3.2",
+    "grunt-reload": "~0.2.0",
+    "should": "~1.2.1",
+    "rewire": "~1.0.3",
+    "jasmine-node": "~1.0.26",
+    "supertest": "~0.4.2"
+  },
+  "engine": "node >= 0.8.1"
+}
