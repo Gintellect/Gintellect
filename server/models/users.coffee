@@ -23,7 +23,7 @@ userSchema.methods.resetAPISecret = (callback) ->
   console.log 'in reset api secret'
   generateAPISecret (err, secret) =>
     console.log 'in generate callback ' + util.inspect(@)
-    if err 
+    if err
       callback err
     else
       @api_secret = secret
