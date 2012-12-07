@@ -1,6 +1,7 @@
 passport = require 'passport'
 util = require 'util'
 crypto = require 'crypto'
+moment = require 'moment'
 
 Strategy = (options, verify) ->
   if (typeof options == 'function')
@@ -11,7 +12,8 @@ Strategy = (options, verify) ->
     throw new Error('hmac authentication strategy requires a verify function')
   
   @_accessKeyField = options.accessKeyField or 'access-key'
-  @_signatureField = options.signaturefield or 'signature'
+  @_signatureField = options.signatureField or 'signature'
+  @_expiryDateField = options.expiryDateField or 'expiry-date'
   
   passport.Strategy.call this
   @name = 'hmac'
@@ -22,10 +24,27 @@ Strategy = (options, verify) ->
 # Inherit from `passport.Strategy`.
 util.inherits Strategy, passport.Strategy
 
+uriEscape= (string) ->
+  uri = escape(string).replace(/\+/g, '%2B').replace(/\//g, '%2F')
+  uri = uri.replace(/%7E/g, '~').replace(/\=/g, '%3D')
+
+encodeProperty = (key, value) ->
+  uriEscape(key) + '=' + uriEscape(value)
+
+encodeHeaders = (headers) ->
+  result = ""
+  if headers['access-key'] 
+    result += encodeProperty('access-key', headers['access-key'])
+  if headers['expiry-date']
+    result += '&' + encodeProperty('expiry-date', headers['expiry-date'])
+  result
+
 stringToSign = (req) ->
   parts = []
   parts.push req.method
-  parts.push req.headers.toString()
+  parts.push req.headers.host
+  parts.push req.path
+  parts.push encodeHeaders(req.headers)
   parts.join '\n'
 
 hmac = (key, string, digest, fn) ->
@@ -33,7 +52,7 @@ hmac = (key, string, digest, fn) ->
     digest = 'binary'
   if not fn
     fn = 'sha256'
-  crypto.createHmac(fn, key).update(string).digest(digest)
+  crypto.createHmac(fn, new Buffer(key, 'utf8')).update(string).digest(digest)
 
 Strategy::authenticate = (req, options) ->
   console.log 'in hmac authenticate'
@@ -45,13 +64,9 @@ Strategy::authenticate = (req, options) ->
       return @fail info
 
     #TODO: get secret from the user id
-    verificationSecret = 'not very secret'
+    verificationSecret = user.api_secret
     verificationString = stringToSign req
-    verificationSignature = hmac accessKey, verificationString, 'base64'
-    
-    console.log 'verif string: ' + verificationString
-    console.log 'req sig: ' + reqSignature
-    console.log 'verif sig: ' + verificationSignature
+    verificationSignature = hmac verificationSecret, verificationString, 'base64'
    
     if reqSignature != verificationSignature
       @fail {message: 'Signature Verification Failure'}
@@ -61,13 +76,20 @@ Strategy::authenticate = (req, options) ->
   options = options or {}
   accessKey = req.headers[@_accessKeyField]
   reqSignature = req.headers[@_signatureField]
+  expiryDate = moment(parseInt(req.headers[@_expiryDateField],10))
   
-  console.log 'req accessKey: ' + accessKey
-  console.log 'req signature: ' + reqSignature
-
   if not accessKey or not reqSignature
     return @fail({message:'Missing credentials'})
  
+  if not expiryDate
+    return @fail({message: 'Missing expiry date'})
+
+  if expiryDate < moment()
+    return @fail({message: 'Message has expired'})
+
+  if expiryDate > moment().add('minutes', 2)
+    return @fail({message: 'expiry date too far in future'})
+
   if @_passReqToCallback
     @_verify req, accessKey, verified
   else

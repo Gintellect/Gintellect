@@ -24,15 +24,12 @@ module.exports = (passport, DOMAIN_URI) ->
     next()
 
   userAction = (req, res, next) ->
-    console.log 'in user action'
     if req.isAuthenticated()
       console.log 'user is authenticated via session cookie'
       next()
     else
-      console.log 'trying hmac'
       #the user was not authenticated via cookies, try hmac
       passport.authenticate('hmac', (err, user, info) ->
-        console.log 'hmac has called back'
         if err
           next(err)
         else if not user
@@ -40,6 +37,7 @@ module.exports = (passport, DOMAIN_URI) ->
           res.json 401, info
         else
           console.log 'user is authenticated via hmac'
+          req.user = user
           next()
       )(req, res, next)
 
@@ -92,7 +90,7 @@ module.exports = (passport, DOMAIN_URI) ->
 
   passport.use new HmacStrategy((accessKey, done) ->
     # if there is an error , we should return:    #   done(err)
-    users.findOneByProviderId accessKey, (err, user) ->
+    users.findOneById accessKey, (err, user) ->
       if err
         done err
       else if not user
