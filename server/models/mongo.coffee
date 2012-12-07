@@ -8,4 +8,5 @@ pass = process.env['GINTELLECT_WWW_DB_PASSWORD'] || ''
 
 opts = { user: user, pass: pass }
 
-exports.db = mongoose.createConnection host, 'gintellect', port, opts
+console.log 'creating mongoose connection'
+exports.db = mongoose.connect host, 'gintellect', port, opts

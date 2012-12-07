@@ -7,11 +7,8 @@
     "coffee-script": "~1.4.0",
     "express": "~3.0.1",
     "mongoose": "~3.4.0",
-    "passport": "~0.1.15",
-    "passport-facebook": "~0.1.4",
     "session-mongoose": "~0.2.0",
-    "aws-sdk": "~0.9.0-pre.1",
-    "moment": "~1.7.2"
+    "gintellect-security": "git://github.com/Gintellect/security.git#v0.0.4"
   },
   "devDependencies": {
     "grunt": "~0.3.17",
