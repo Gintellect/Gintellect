@@ -16,7 +16,7 @@ describe 'User index', ->
     req.query = {max: max}
 
     res.setHeader = (a,b) ->
-      a.should.equal 'Content-Type'
+      a.should.equal 'Content-Type2'
       b.should.equal 'application/json'
     
     res.write = (a) ->
@@ -27,4 +27,4 @@ describe 'User index', ->
       done()
 
     mockUser.setNameField('david')
-    sales.index(req,res)
+    users.index(req,res)

@@ -2,7 +2,7 @@ mongoose = require 'mongoose'
 mongo = require './mongo'
 
 turnSchema = mongoose.Schema {
-, player_id: 'ObjectId'
+player_id: 'ObjectId'
 , turn_number: 'Number'
 , moves: ['String'] }
 

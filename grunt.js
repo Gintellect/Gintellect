@@ -70,7 +70,7 @@ module.exports = function (grunt) {
       },
       scripts: {
         files: {
-          'dist/client/': 'staging/client/**/*.js'
+          'dist/client/js/': ['staging/client/**/*.js', 'staging/client/**/**/*.js']
         }
       },
       styles: {
@@ -154,15 +154,19 @@ module.exports = function (grunt) {
     watch: {
       coffee: {
         files: './client/js/**/*.coffee',
-        tasks: 'coffeeLint coffee lint copy:scripts'
+        tasks: 'coffeeLint coffee lint copy:scripts reload'
       },
       less: {
         files: './client/css/**/*.less',
-        tasks: 'less copy:styles'
+        tasks: 'less copy:styles reload'
       },
       template: {
         files: '<config:template.dev.src>',
-        tasks: 'template:dev copy:views'
+        tasks: 'template:dev copy:views reload'
+      },
+      html: {
+        files: './client/views/*.html',
+        tasks: 'copy:staging:files copy:views reload'
       },
       server: {
         files: './client/index.template',
@@ -177,7 +181,7 @@ module.exports = function (grunt) {
 
     server: {
       app: {
-        src: './dist/server/server.coffee',
+        src: './dist/server/app.coffee',
         port: 3005,
         watch: './dist/server/routes.coffee'
       }
@@ -187,6 +191,17 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-hustler');
   grunt.loadNpmTasks('grunt-reload');
   grunt.loadNpmTasks('grunt-contrib-copy');
+
+  grunt.registerTask('server', 'Start the express app.', function() {
+    grunt.log.writeln('Starting Gintellect server');
+    var server = require('./dist/server/app').listen(3005);
+
+    // grunt.log.writeln('Stopping Gintellect server');
+    // server.close();
+
+  })
+
+  grunt.registerTask('stack', 'server reload watch');
 
   grunt.registerTask('unit-tests', 'run the testacular test driver on jasmine unit tests', function () {
     var done = this.async();
@@ -257,9 +272,5 @@ module.exports = function (grunt) {
     'e2e-tests'
   ]);
 
-  grunt.registerTask('run', [
-    'server',
-    'reload',
-    'watch'
-  ]);
+  grunt.registerTask('run', 'server reload watch');
 };
