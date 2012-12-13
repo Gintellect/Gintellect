@@ -27,15 +27,6 @@ module.exports = (app, dir, auth) ->
   app.get     '/api/users',           auth.sysAdminAction,  api.users.index
   app.delete  '/api/users/:id',       auth.sysAdminAction,  api.users.destroy
 
-  #
-  #json/authentication routes
-  #
-
-  #This is a special route we're using to let angular poll when waiting
-  #for OAuth / etc to be done in a separate window
-  app.get     '/api/loginstatus',       auth.publicAction,    auth.loginStatus
-  app.get     '/api/logout',            auth.publicAction,    auth.apiLogout
-
   #all other request routes will be handled by angular on the server
   #so we return the single page app and let the client handle the rest
   app.get '*', (req, res) ->

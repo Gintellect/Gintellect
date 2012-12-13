@@ -1,32 +1,25 @@
-###global define###
+angular.module('app').controller 'usersController'
+, ['$scope', 'User'
+, ($scope, User) ->
+  $scope.max = 10
 
-define ['controllers/controllers'
-, 'services/userService']
-, (controllers) ->
-  'use strict'
+  $scope.getData = () ->
+    $scope.users = User.query {max: $scope.max}
+    , () ->
+      $scope.max = $scope.users.length
 
-  controllers.controller 'usersController'
-  , ['$scope', 'User'
-  , ($scope, User) ->
-    $scope.max = 10
+  $scope.deleteUser = (id) ->
+    User.delete {id: id}
+    , () ->
+      $scope.getData()
 
-    $scope.getData = () ->
-      $scope.users = User.query {max: $scope.max}
-      , () ->
-        $scope.max = $scope.users.length
+  $scope.getUsers = () ->
+    $scope.users = User.query()
 
-    $scope.deleteUser = (id) ->
-      User.delete {id: id}
-      , () ->
-        $scope.getData()
+  $scope.deleteUser = (id) ->
+    User.delete {id: id}
+    , () ->
+      $scope.getUsers()
 
-    $scope.getUsers = () ->
-      $scope.users = User.query()
-
-    $scope.deleteUser = (id) ->
-      User.delete {id: id}
-      , () ->
-        $scope.getUsers()
-
-    $scope.getData()
-  ]
+  $scope.getData()
+]

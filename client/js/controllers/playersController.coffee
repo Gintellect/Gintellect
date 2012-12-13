@@ -1,30 +1,23 @@
-###global define###
+angular.module('app').controller 'playersController'
+, ['$scope', 'Player'
+, ($scope, Player) ->
 
-define ['controllers/controllers'
-, 'services/playerService']
-, (controllers) ->
-  'use strict'
+  $scope.createPlayer = (name) ->
+    player = {user_id: $scope.me.id, name: name}
+    player.mood = 'tired'
+    Player.save player, () ->
+      $scope.refresh()
 
-  controllers.controller 'playersController'
-  , ['$scope', 'Player'
-  , ($scope, Player) ->
+  $scope.getPlayers = () ->
+    $scope.players = Player.query()
+  
+  $scope.deletePlayer = (id) ->
+    Player.delete {id: id}
+    , () ->
+      $scope.refresh()
 
-    $scope.createPlayer = (name) ->
-      player = {user_id: $scope.me.id, name: name}
-      player.mood = 'tired'
-      Player.save player, () ->
-        $scope.refresh()
+  $scope.refresh = () ->
+    $scope.getPlayers()
 
-    $scope.getPlayers = () ->
-      $scope.players = Player.query()
-    
-    $scope.deletePlayer = (id) ->
-      Player.delete {id: id}
-      , () ->
-        $scope.refresh()
-
-    $scope.refresh = () ->
-      $scope.getPlayers()
-
-    $scope.refresh()
-  ]
+  $scope.refresh()
+]

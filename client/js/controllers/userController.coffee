@@ -1,20 +1,13 @@
-###global define###
+angular.module('app').controller 'userController'
+, ['$scope', 'UserAccount'
+, ($scope, UserAccount) ->
 
-define ['controllers/controllers'
-, 'services/userAccountService']
-, (controllers) ->
-  'use strict'
+  $scope.deleteUser = (id) ->
+    UserAccount.delete()
 
-  controllers.controller 'userController'
-  , ['$scope', 'UserAccount'
-  , ($scope, UserAccount) ->
+  $scope.resetApi = () ->
+    console.log 'reset api'
+    UserAccount.resetApi()
 
-    $scope.deleteUser = (id) ->
-      UserAccount.delete()
-
-    $scope.resetApi = () ->
-      console.log 'reset api'
-      UserAccount.resetApi()
-
-    $scope.user = UserAccount.get()
-  ]
+  $scope.user = UserAccount.get()
+]

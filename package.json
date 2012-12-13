@@ -8,7 +8,7 @@
     "express": "~3.0.1",
     "mongoose": "~3.4.0",
     "session-mongoose": "~0.2.0",
-    "gintellect-security": "git://github.com/Gintellect/security.git#v0.0.4"
+    "gintellect-security": "git://github.com/Gintellect/security.git#v0.0.5"
   },
   "devDependencies": {
     "grunt": "~0.3.17",

@@ -99,7 +99,7 @@ module.exports = function (grunt) {
     // compile Less to CSS
     less: {
       dist: {
-        src: './client/css/bootstrap.less',
+        src: './client/css/styles.less',
         dest: './staging/client/css/styles.css'
       }
     },
@@ -123,16 +123,20 @@ module.exports = function (grunt) {
       scripts: {
         baseUrl: './staging/client/js/',
         findNestedDependencies: true,
-        include: 'requireLib',
         logLevel: 0,
         mainConfigFile: './staging/client/js/main.js',
         name: 'main',
+        onBuildWrite: function (moduleName, path, contents) {
+          if (moduleName === 'main') {
+            return '';
+          }
+
+          return contents;
+        },
         optimize: 'uglify',
         out: './staging/client/js/scripts.min.js',
-        paths: {
-          requireLib: 'libs/require'
-        },
-        preserveLicenseComments: false
+        preserveLicenseComments: false,
+        skipModuleInsertion: true
       },
       styles: {
         baseUrl: './staging/client/css/',

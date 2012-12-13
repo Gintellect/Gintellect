@@ -1,24 +1,84 @@
-###global define, require###
-
-requirejs
-  map:
-    '*':
-      'libs/angularResource': 'libs/angular-resource'
+require
   shim:
-    'libs/angular':
-      exports: 'angular'
-    'libs/angular-resource':
+    'libs/angular-resource': deps: [ 'libs/angular' ]
+    'libs/bootstrap': deps: ['libs/jquery-1.8.3' ]
+    'controllers/gamesController':
       deps: [
-        'libs/angular'
+        'libs/angular', 'app'
+        , 'services/gameService'
+        , 'services/playerService'
       ]
-    'libs/bootstrap':
+    'controllers/loginController':
       deps: [
-        'libs/jquery-1.8.3'
+        'libs/angular', 'app'
+        , 'responseInterceptors/auth'
       ]
+    'controllers/logoutController':
+      deps: [
+        'libs/angular', 'app'
+        , 'responseInterceptors/auth'
+      ]
+    'controllers/mainController':
+      deps: [
+        'libs/angular', 'app'
+        , 'responseInterceptors/auth'
+      ]
+    'controllers/nacController':
+      deps: [
+        'libs/angular', 'app'
+        , 'services/gameService'
+        , 'services/userService'
+        , 'services/playerService'
+      ]
+    'controllers/playersController':
+      deps: [
+        'libs/angular', 'app'
+        , 'services/playerService'
+      ]
+    'controllers/userController':
+      deps: [
+        'libs/angular', 'app'
+        , 'services/userAccountService'
+      ]
+    'controllers/usersController':
+      deps: [
+        'libs/angular', 'app'
+        , 'services/userService'
+      ]
+    'directives/authDirective':
+      deps: [
+        'libs/angular', 'app'
+      ]
+    'responseInterceptors/auth':
+      deps: [
+        'libs/angular', 'app'
+      ]
+    'services/gameService':
+      deps: [
+        'libs/angular', 'app'
+        , 'libs/angular-resource'
+      ]
+    'services/playerService':
+      deps: [
+        'libs/angular', 'app'
+        , 'libs/angular-resource'
+      ]
+    'services/userAccountService':
+      deps: [
+        'libs/angular', 'app'
+        , 'libs/angular-resource'
+      ]
+    'services/userService':
+      deps: [
+        'libs/angular', 'app'
+        , 'libs/angular-resource'
+      ]
+    'app': deps: ['libs/angular', 'libs/angular-resource']
+    'bootstrap': deps: ['libs/angular', 'app']
+    'routes': deps: ['libs/angular', 'app']
   [
-    'app'
+    'require'
     'libs/bootstrap'
-    'bootstrap'
     'controllers/loginController'
     'controllers/logoutController'
     'controllers/mainController'
@@ -29,40 +89,7 @@ requirejs
     'controllers/gamesController'
     'responseInterceptors/auth'
     'directives/authDirective'
-    'services/gameService'
-    'services/userService'
-    'services/userAccountService'
-    'services/playerService'
-  ], (app) ->
-    app.config ['$routeProvider', '$locationProvider'
-    , ($routeProvider, $locationProvider) ->
-      $routeProvider
-      .when '/'
-        controller: 'mainController'
-        templateUrl: '/views/main.html'
-      .when '/login'
-        controller: 'loginController'
-        templateUrl: '/views/login.html'
-      .when '/logout'
-        controller: 'logoutController'
-        templateUrl: '/views/logout.html'
-      .when '/games'
-        controller: 'gamesController'
-        templateUrl: '/views/games.html'
-      .when '/games/:id'
-        controller: 'nacController'
-        templateUrl: '/views/noughts-and-crosses.html'
-      .when '/games/noughts-and-crosses'
-        controller: 'nacController'
-        templateUrl: '/views/noughts-and-crosses.html'
-      .when '/players'
-        controller: 'playersController'
-        templateUrl: '/views/players.html'
-      .when '/user'
-        controller: 'userController'
-        templateUrl: 'views/user.html'
-      .otherwise
-        redirectTo: '/'
-      $locationProvider.html5Mode(true)
-      .hashPrefix '!'
-    ]
+    'routes'
+  ], (require) ->
+    require ['bootstrap']
+ 

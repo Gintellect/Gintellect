@@ -1,9 +1,4 @@
-###global define###
-
-define ['libs/angular', 'services/services', 'libs/angularResource']
-, (angular, services) ->
-  'use strict'
-
+angular.module('app').factory 'UserAccount', ['$resource', ($resource) ->
   methods =
     query:
       method: 'GET'
@@ -14,6 +9,5 @@ define ['libs/angular', 'services/services', 'libs/angularResource']
       params:
         resetApi: true
 
-  services.factory 'UserAccount', ['$resource', ($resource) ->
-    $resource '/api/user', {}, methods
-  ]
+  $resource '/api/user', {}, methods
+]
