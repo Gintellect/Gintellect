@@ -26,7 +26,7 @@ app.configure ->
 
   sessionOpts =
     cookie:
-      maxAge: 120000
+      maxAge: 1200000
     store: mongooseSessionStore
     secret: process.env['GINTELLECT_SECRET'] || 'secret'
 

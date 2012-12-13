@@ -19,6 +19,9 @@ define ['directives/directives'], (directives) ->
         $location.path '/login'
 
       scope.$on 'event:auth-loginConfirmed', () ->
+        console.log 'auth login confirmed'
+        if path == '/logout'
+          path = '/'
         $location.path path
     
     link: link

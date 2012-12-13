@@ -195,10 +195,6 @@ module.exports = function (grunt) {
   grunt.registerTask('server', 'Start the express app.', function() {
     grunt.log.writeln('Starting Gintellect server');
     var server = require('./dist/server/app').listen(3005);
-
-    // grunt.log.writeln('Stopping Gintellect server');
-    // server.close();
-
   })
 
   grunt.registerTask('stack', 'server reload watch');
