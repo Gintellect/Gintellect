@@ -66,12 +66,12 @@ module.exports = function (grunt) {
     template: {
       views: {
         files: {
-          './temp/views/': './src/views/**/*.template'
+          './temp/client/views/': './client/views/**/*.template'
         }
       },
       dev: {
         files: {
-          './temp/index.html': './src/index.template'
+          './temp/client/index.html': './client/index.template'
         },
         environment: 'dev'
       },
@@ -130,7 +130,7 @@ module.exports = function (grunt) {
       },
       index: {
         files: {
-          'dist/client/': 'temp/index.html'
+          'dist/client/': 'temp/client/index.html'
         }
       },
       views: {
@@ -192,17 +192,13 @@ module.exports = function (grunt) {
         files: './client/css/**/*.less',
         tasks: 'less copy:styles reload'
       },
-      template: {
-        files: '<config:template.dev.src>',
-        tasks: 'template:dev copy:views reload'
-      },
       html: {
         files: './client/views/*.html',
         tasks: 'copy:temp:files copy:views reload'
       },
       server: {
         files: './client/index.template',
-        tasks: 'template reload'
+        tasks: 'template:dev copy:index reload'
       }
     },
 
