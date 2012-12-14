@@ -138,7 +138,7 @@ module.exports = function (grunt) {
       },
       views: {
         files: {
-          'dist/client/': 'temp/client/**/*.html'
+          'dist/client/views/': 'temp/client/**/*.html'
         }
       }
     },
@@ -189,7 +189,7 @@ module.exports = function (grunt) {
     watch: {
       coffee: {
         files: './client/js/**/*.coffee',
-        tasks: 'coffeeLint coffee lint copy:scripts reload'
+        tasks: 'coffeeLint coffee copy:scripts reload'
       },
       less: {
         files: './client/css/**/*.less',
