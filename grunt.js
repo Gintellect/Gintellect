@@ -9,7 +9,10 @@ module.exports = function (grunt) {
     // delete the dist folder
     delete: {
       reset: {
-        files: ['./dist/', './temp/', './test/client/spec/*.js']
+        files: ['./dist/', './test/client/spec/']
+      },
+      temp: {
+        files: ['./temp/']
       }
     },
 
@@ -251,7 +254,8 @@ module.exports = function (grunt) {
     'template:views',
     'template:dev',
     'copy:temp',
-    'copy:dev'
+    'copy:dev',
+    'delete:temp'
   ]);
   
   grunt.registerTask('run', 'default server reload watch');
@@ -268,7 +272,8 @@ module.exports = function (grunt) {
     'copy:temp',
     'requirejs',
     'minifyHtml',
-    'copy:prod'
+    'copy:prod',
+    'delete:temp'
   ]);
 
   grunt.registerTask('test', [
