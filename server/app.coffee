@@ -5,6 +5,7 @@ routes = require './routes'
 conf = require './conf'
 dir =  path.normalize __dirname + "/../client"
 users = require('./models/models').users
+stack = require './common/middleware'
 
 app = express()
 
@@ -34,7 +35,9 @@ app.configure ->
 
   #configure the static files directory
   app.use express.static dir
-
+  #mainly for the beneift of IE - we will explicitly define no cache
+  #on all of our api routes
+  app.use '/api', stack.noCache
   #configure all of the security settings
   auth = require('gintellect-security')(app, users, conf.security)
 
