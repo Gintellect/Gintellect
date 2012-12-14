@@ -255,13 +255,14 @@ module.exports = function (grunt) {
   ]);
   
   grunt.registerTask('run', 'default server reload watch');
+  grunt.registerTask('runprod', 'prod server reload watch');
 
   grunt.registerTask('prod', [
     'delete',
     'coffeeLint:scripts',
     'coffee:scripts',
     'less',
-    'tempate:views',
+    'template:views',
     'inlineTemplate',
     'template:prod',
     'copy:temp',
