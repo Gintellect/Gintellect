@@ -16,5 +16,7 @@ npm-debug.log
 node_modules/
 .dotcloud/
 dist/
-staging/
+temp/
 .DS_Store
+
+test/client/spec/

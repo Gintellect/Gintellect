@@ -3,10 +3,8 @@
 define ['libs/angularMocks', 'controllers/usersController']
 , (mocks, usersController) ->
   'use strict'
-
   beforeEach module 'ngResource'
-  beforeEach module 'controllers'
-  beforeEach module 'services'
+  beforeEach module 'app'
   beforeEach () ->
     this.addMatchers { toEqualData: (expected) ->
       angular.equals this.actual, expected }

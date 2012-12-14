@@ -9,14 +9,24 @@ module.exports = function (grunt) {
     // delete the dist folder
     delete: {
       reset: {
-        files: ['./dist/', './staging/', './test/client/spec/*.js']
+        files: ['./dist/', './temp/', './test/client/spec/*.js']
       }
     },
 
     // lint CoffeeScript
     coffeeLint: {
       scripts: {
-        src: ['./client/js/**/*.coffee','./server/**/*.coffee','./test/**/*.coffee'],
+        src: ['./client/js/**/*.coffee','./server/**/*.coffee'],
+        indentation: {
+          value: 2,
+          level: 'error'
+        },
+        no_plusplus: {
+          level: 'error'
+        }
+      },
+      tests: {
+        src: ['./test/client/**/*.coffee', '/test/server/**/*.coffee'],
         indentation: {
           value: 2,
           level: 'error'
@@ -29,128 +39,146 @@ module.exports = function (grunt) {
 
     // compile CoffeeScript to JavaScript
     coffee: {
-      dist: {
-        src: './client/js/**/*.coffee',
-        dest: './staging/client/js/',
-        bare: true
-      },
-      test: {
-        src: './test/client/coffee/**/*.coffee',
-        dest: './test/client/spec/',
-        bare: true
-      }
-    },
-
-    copy: {
-      staging: {
-        files: {
-          'staging/client/js/libs/': 'client/js/libs/**',
-          'staging/client/img/': 'client/img/**',
-          'staging/client/views/': 'client/views/**',
-          'staging/server/': 'server/**', 
-          'staging/': ['dotcloud.yml', 'package.json']
-        }
-      },
-      dev: {
-        files: {
-          'dist/': 'staging/**'
-        }
-      },
-      prod: {
-        files: {
-          'dist/client/js/': 'staging/client/js/scripts.min.js',
-          'dist/client/js/libs/': ['staging/client/js/libs/html5shiv-printshiv.js', 'staging/client/js/libs/json2.js'],
-          'dist/client/css/': 'staging/client/css/styles.min.css',
-          'dist/client/img/': 'staging/client/img/*',
-          'dist/client/index.html': 'staging/client/index.min.html',
-          'dist/client/views/': 'staging/client/views/**',
-          'dist/server/': 'staging/server/**',
-          'dist/' : ['staging/dotcloud.yml', 'staging/package.json']
-        }
-      },
       scripts: {
         files: {
-          'dist/client/js/': ['staging/client/**/*.js', 'staging/client/**/**/*.js']
-        }
+          './temp/client/js/': './client/js/**/*.coffee'
+        },
+        bare: true
       },
-      styles: {
+      tests: {
         files: {
-          'dist/client/': 'staging/client/**/*.css'
-        }
-      },
-      views: {
-        files: {
-          'dist/client/': 'staging/client/**/*.html'
-        }
-      }
-    },
-
-    lint: {
-      scripts: ['./client/!(libs)**/*.js']
-    },
-
-    jshint: {
-      options: {
-        // CoffeeScript uses null for default parameter values
-        eqnull: true
+          './test/client/spec/': './test/client/coffee/**/*.coffee'
+        },
+        bare: true
       }
     },
 
     // compile Less to CSS
     less: {
-      dist: {
-        src: './client/css/styles.less',
-        dest: './staging/client/css/styles.css'
+      styles: {
+        files: {
+          './temp/client/css/styles.css': './client/css/styles.less'
+        }
       }
     },
 
     // compile templates
     template: {
+      views: {
+        files: {
+          './temp/views/': './src/views/**/*.template'
+        }
+      },
       dev: {
-        src: './client/**/*.template',
-        dest: './staging/client/',
+        files: {
+          './temp/index.html': './src/index.template'
+        },
         environment: 'dev'
       },
       prod: {
-        src: '<config:template.dev.src>',
-        dest: '<config:template.dev.dest>',
+        files: '<config:template.dev.files>',
         environment: 'prod'
+      }
+    },
+
+    inlineTemplate: {
+      views: {
+        files: {
+          './temp/client/views/views.html': './temp/client/views/**/*.html'
+        },
+        type: 'text/ng-template',
+        trim: 'temp'
+      }
+    },
+
+    copy: {
+      temp: {
+        files: {
+          'temp/client/js/libs/': 'client/js/libs/**',
+          'temp/client/img/': 'client/img/**',
+          'temp/client/views/': 'client/views/**',
+          'temp/server/': 'server/**', 
+          'temp/': ['dotcloud.yml', 'package.json']
+        }
+      },
+      dev: {
+        files: {
+          'dist/': 'temp/**'
+        }
+      },
+      prod: {
+        files: {
+          'dist/client/js/': 'temp/client/js/scripts.min.js',
+          'dist/client/js/libs/': ['temp/client/js/libs/html5shiv-printshiv.js', 'temp/client/js/libs/json2.js'],
+          'dist/client/css/': 'temp/client/css/styles.min.css',
+          'dist/client/img/': 'temp/client/img/*',
+          'dist/client/index.html': 'temp/client/index.min.html',
+          'dist/client/views/': 'temp/client/views/**',
+          'dist/server/': 'temp/server/**',
+          'dist/' : ['temp/dotcloud.yml', 'temp/package.json']
+        }
+      },
+      scripts: {
+        files: {
+          'dist/client/js/': 'temp/client/js/**'
+        }
+      },
+      styles: {
+        files: {
+          'dist/client/css/': 'temp/client/css/**'
+        }
+      },
+      index: {
+        files: {
+          'dist/client/': 'temp/index.html'
+        }
+      },
+      views: {
+        files: {
+          'dist/client/': 'temp/client/**/*.html'
+        }
       }
     },
 
     // optimizes files managed by RequireJS
     requirejs: {
       scripts: {
-        baseUrl: './staging/client/js/',
+        baseUrl: './temp/client/js/',
         findNestedDependencies: true,
         logLevel: 0,
-        mainConfigFile: './staging/client/js/main.js',
+        mainConfigFile: './temp/client/js/main.js',
         name: 'main',
         onBuildWrite: function (moduleName, path, contents) {
-          if (moduleName === 'main') {
+          var modulesToExclude = ['main'],
+            shouldExcludeModule = modulesToExclude.indexOf(moduleName) >= 0;
+
+          if (shouldExcludeModule) {
             return '';
           }
 
           return contents;
         },
         optimize: 'uglify',
-        out: './staging/client/js/scripts.min.js',
+        out: './temp/client/js/scripts.min.js',
         preserveLicenseComments: false,
-        skipModuleInsertion: true
+        skipModuleInsertion: true,
+        uglify: {
+          no_mangle: false
+        }
       },
       styles: {
-        baseUrl: './staging/client/css/',
-        cssIn: './staging/client/css/styles.css',
+        baseUrl: './temp/client/css/',
+        cssIn: './temp/client/css/styles.css',
         logLevel: 0,
         optimizeCss: 'standard',
-        out: './staging/client/css/styles.min.css'
+        out: './temp/client/css/styles.min.css'
       }
     },
 
     minifyHtml: {
       prod: {
         files: {
-          './staging/client/index.min.html': './staging/client/index.html'
+          './temp/client/index.min.html': './temp/client/index.html'
         }
       }
     },
@@ -170,7 +198,7 @@ module.exports = function (grunt) {
       },
       html: {
         files: './client/views/*.html',
-        tasks: 'copy:staging:files copy:views reload'
+        tasks: 'copy:temp:files copy:views reload'
       },
       server: {
         files: './client/index.template',
@@ -183,13 +211,6 @@ module.exports = function (grunt) {
       liveReload: {}
     },
 
-    server: {
-      app: {
-        src: './dist/server/app.coffee',
-        port: 3005,
-        watch: './dist/server/routes.coffee'
-      }
-    }
   });
 
   grunt.loadNpmTasks('grunt-hustler');
@@ -200,8 +221,6 @@ module.exports = function (grunt) {
     grunt.log.writeln('Starting Gintellect server');
     var server = require('./dist/server/app').listen(3005);
   })
-
-  grunt.registerTask('stack', 'server reload watch');
 
   grunt.registerTask('unit-tests', 'run the testacular test driver on jasmine unit tests', function () {
     var done = this.async();
@@ -232,45 +251,36 @@ module.exports = function (grunt) {
     'delete',
     'coffeeLint',
     'coffee',
-    'lint',
     'less',
+    'template:views',
     'template:dev',
-    'copy:staging',
+    'copy:temp',
     'copy:dev'
   ]);
-
-  grunt.registerTask('dev', [
-    'delete',
-    'coffeeLint',
-    'coffee',
-    'lint',
-    'less',
-    'template:dev',
-    'copy:staging',
-    'copy:dev',
-    'watch'
-  ]);
+  
+  grunt.registerTask('run', 'default server reload watch');
 
   grunt.registerTask('prod', [
     'delete',
-    'coffeeLint',
-    'coffee',
-    'lint',
+    'coffeeLint:scripts',
+    'coffee:scripts',
     'less',
+    'tempate:views',
+    'inlineTemplate',
     'template:prod',
-    'copy:staging',
+    'copy:temp',
     'requirejs',
     'minifyHtml',
     'copy:prod'
   ]);
 
-
   grunt.registerTask('test', [
     'default',
+    'coffeeLint:tests',
+    'coffee:tests',
     'jasmine-tests',
     'unit-tests',
     'e2e-tests'
   ]);
 
-  grunt.registerTask('run', 'server reload watch');
 };

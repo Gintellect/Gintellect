@@ -11,14 +11,14 @@ files = [
   JASMINE_ADAPTER,
   REQUIRE,
   REQUIRE_ADAPTER,
-  {pattern: 'dist/client/js/filters/*.js', included: false},
   {pattern: 'dist/client/js/controllers/*.js', included: false},
   {pattern: 'dist/client/js/services/*.js', included: false},
   {pattern: 'dist/client/js/libs/angular.js', included: false},
   {pattern: 'dist/client/js/libs/angular-resource.js', included: false},
+  {pattern: 'dist/client/js/*.js', included: false},
   {pattern: 'test/libs/*.js', included: false},
 
-  'test/client/main.js',
+  'test/client/spec/main.js',
 
   {pattern: 'test/client/spec/controllers/*.js', included: false},
   {pattern: 'test/client/spec/services/*.js', included: false}

@@ -1,11 +1,10 @@
 ###global define, describe, beforeEach, module, it, inject, expect###
-
 define ['libs/angularMocks', 'services/userService']
 , () ->
   'use strict'
 
   beforeEach module 'ngResource'
-  beforeEach module 'services'
+  beforeEach module 'app'
   beforeEach () ->
     this.addMatchers { toEqualData: (expected) ->
       angular.equals this.actual, expected }
