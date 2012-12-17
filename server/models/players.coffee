@@ -1,15 +1,5 @@
 mongoose = require 'mongoose'
-mongo = require './mongo'
-Schema = mongoose.Schema
-util = require 'util'
-
-playerSchema = mongoose.Schema {
-user_id: 'ObjectId'
-, name: 'String'
-, mood: 'String'
-}
-
-Player = mongo.db.model 'Players', playerSchema
+Player = mongoose.model 'Player'
 
 find = (options, callback) ->
   max = options?.max or 10000
@@ -44,3 +34,4 @@ exports.find = find
 exports.findOneById = findOneById
 exports.create = create
 exports.destroy = destroy
+exports.Player = Player

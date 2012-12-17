@@ -1,4 +1,5 @@
 express = require 'express'
+mongo = require './models/mongo'
 mongoStore = require('session-mongoose')(express)
 path = require 'path'
 routes = require './routes'

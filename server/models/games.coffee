@@ -1,38 +1,34 @@
 mongoose = require 'mongoose'
-mongo = require './mongo'
 
-turnSchema = mongoose.Schema {
-player_id: 'ObjectId'
-, turn_number: 'Number'
-, moves: ['String'] }
-
-gameSchema = mongoose.Schema {
-game_number: 'Number'
-, game_type: 'String'
-, game_name: 'String'
-, is_active: 'Boolean'
-, next_player: 'ObjectId'
-, players: [{player_id: 'ObjectId'}]
-, turns: [turnSchema]}
-
-Game = mongo.db.model 'Game', gameSchema
-
-gameSchema.methods.playTurn = (turn, callback) ->
-  @turns.push turn
-  @save (err, game) ->
-    callback err game
+Player = mongoose.model 'Player'
+Game = mongoose.model 'Games' 
 
 find = (options, callback) ->
   max = options?.max or 10000
   sort = options?.sort or {}
   query = options?.query or {}
+  player = options?.player or {}
+  if player 
+    pl = new Player { _id : player }
+    query.players = pl._id
+
   if max < 1
     callback
   else
-    Game.find(query).sort(sort).limit(max).exec callback
+    Game.find(query).sort(sort).limit(max).populate('players').exec callback
 
 create = (json, callback) ->
   obj = new Game json
+  
+  player1 = new Player json.player_ids[0]
+  player2 = new Player json.player_ids[1]
+
+  obj.players.push player1
+  obj.players.push player2 
+  obj.next_player = player1
+
+  obj.representation = '...|...|...'
+
   obj.save (err, game) ->
     callback err, game
 
@@ -48,10 +44,8 @@ findOneById = (id, callback) ->
   Game.findOne { _id : id}, (err, game) ->
     callback err, game
 
-createTurn = (json, callback) ->
-
-
 exports.findOneById = findOneById
 exports.create = create
+exports.takeTurn = takeTurn
 exports.destroy = destroy
 exports.find = find
