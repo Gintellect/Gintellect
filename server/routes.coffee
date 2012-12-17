@@ -21,7 +21,7 @@ module.exports = (app, dir, auth) ->
   app.delete  '/api/games/:id',       auth.userAction,      api.games.destroy
   app.post    '/api/games',           auth.userAction,      api.games.create
 
-  app.post    '/api/turns',           auth.userAction,      api.games.create
+  app.post    '/api/turns',           auth.userAction,      api.turns.create
 
   # sysAdminAction routes
   app.get     '/api/users',           auth.sysAdminAction,  api.users.index

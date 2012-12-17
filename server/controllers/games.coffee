@@ -23,15 +23,16 @@ exports.show = (req, res) ->
       res.json 200, game
 
 exports.index = (req, res) ->
-  max = () ->
+  max = do () ->
     if  isNaN req.query.max
       10
     else
       req.query.max || 10
 
-  max = max()
+  query = do () ->
+    req.query.player or {}
 
-  models.games.find {sort: {name: 'desc'}, limit: max }
+  models.games.find {player: query, sort: {name: 'desc'}, limit: max }
   , (err, result) ->
     if err
       res.json 404
