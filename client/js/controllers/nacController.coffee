@@ -4,12 +4,30 @@ angular.module('app').controller 'nacController'
 , ($scope, $location, $routeParams, Game, User, Player) ->
   $scope.max = 10
 
-  $scope.getData = () ->
-    $scope.game = Game.get {id: $routeParams.id}, () ->
-      $scope.player1 = Player.get { id: $scope.game.players[0].player_id }
+  $scope.changeSelectedPlayer = () ->
+    $scope.games = Game.query { player: $scope.player._id }
+
+  refreshBoard = () ->
+    $scope.player1 = Player.get { id: $scope.game.players[0] }
+    , () ->
+      $scope.player2 = Player.get { id: $scope.game.players[1] }
       , () ->
-        $scope.nextPlayer = $scope.player1
-      $scope.player2 = Player.get { id: $scope.game.players[1].player_id }
+        if $scope.game.next_player == $scope.player1._id
+          $scope.nextPlayer = $scope.player1
+        else
+          $scope.nextPlayer = $scope.player2
+        renderBoard $scope.game.representation
+
+  $scope.selectGame = (id) ->
+    console.log 'in select game ' 
+    $scope.game = Game.get { id: id }, () ->
+      refreshBoard()
+
+  $scope.getData = () ->
+    $scope.players = Player.query()
+
+    $scope.game = Game.get {id: $routeParams.id}, () ->
+      refreshBoard()
 
   $scope.cellStyle =
     'height': '50px'
@@ -66,18 +84,16 @@ angular.module('app').controller 'nacController'
       else
         $scope.winningPlayer = $scope.player2
 
-  readUrl = (value) ->
-    console.log('read url called')
+  renderBoard = (value) ->
     console.log(value)
     if value
-      value = value.split('/')
-      $scope.nextMove = value[1]
-      angular.forEach value[0].split(';'), (row, col) ->
-        console.log('row: ' + row)
-        console.log('col: ' + col)
-        console.log('row split: ' + row.split(','))
-        $scope.board[col] = row.split(',')
-        console.log($scope.board)
+      for row_moves, row in value.split '|'
+        for move, column in row_moves.split ''
+          if move == '.'
+            $scope.board[row][column] = ''
+          else
+            $scope.board[row][column] = move
+      console.log($scope.board)
       grade()
 
   $scope.getData()

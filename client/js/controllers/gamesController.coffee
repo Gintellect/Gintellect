@@ -10,10 +10,10 @@ angular.module('app').controller 'gamesController'
 
   $scope.createGame = () ->
     game = { game_number: 1
-    , game_name: $scope.gameName
-    , players: [ {
-    player_id: $scope.player1._id}
-    , {player_id: $scope.player2._id }
+    , name: $scope.gameName
+    , player_ids: [ {
+    _id: $scope.player1._id}
+    , {_id: $scope.player2._id }
     ] }
     Game.save game, () ->
       $scope.getData()

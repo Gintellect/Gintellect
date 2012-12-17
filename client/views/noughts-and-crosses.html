@@ -22,6 +22,13 @@
   </div>
   <div class="span6">
     <h4>Latest Games</h4>
-    
+    <select ng-model="player" ng-change="changeSelectedPlayer()" ng-options="player.name for player in players">
+    </select>
+    <div ng-repeat="game in games">
+      <label>{{game.name}}</label>
+      <button class="btn btn-info btn-small" ng-click="selectGame(game._id)">
+        <i class="icon-white icon-play-circle"></i>
+      </button>
+    </div>
   </div>
 </div>

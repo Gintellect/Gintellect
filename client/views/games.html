@@ -1,5 +1,5 @@
 <div ng-repeat="game in games">
-  <label>{{game.game_name}}</label>  
+  <label>{{game.name}}</label>  
   <button ng-click="showGame(game._id)" class="btn btn-primary">View</button>
   <button ng-click="deleteGame(game._id)" class="btn btn-danger">   
     <i class="icon-trash icon-white"></i>
@@ -8,7 +8,7 @@
 
 <input ng-model="gameName" type="text"></input>
   
-<select ng-model="player1" ng-options="player.name for player in players">
+<select ng-model="player1" ng-change="test()" ng-options="player.name for player in players">
 </select>
 
 <select ng-model="player2" ng-options="player.name for player in players">
