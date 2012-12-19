@@ -1,33 +1,34 @@
 angular.module('app').controller 'nacController'
 , ['$scope', '$location', '$routeParams'
-, 'Game', 'User', 'Player'
-, ($scope, $location, $routeParams, Game, User, Player) ->
+, 'Game', 'Turn', 'User', 'Player'
+, ($scope, $location, $routeParams, Game, Turn, User, Player) ->
   $scope.max = 10
 
   $scope.changeSelectedPlayer = () ->
     $scope.games = Game.query { player: $scope.player._id }
 
-  refreshBoard = () ->
+  refreshGame = () ->
     $scope.player1 = Player.get { id: $scope.game.players[0] }
     , () ->
       $scope.player2 = Player.get { id: $scope.game.players[1] }
       , () ->
-        if $scope.game.next_player == $scope.player1._id
-          $scope.nextPlayer = $scope.player1
-        else
-          $scope.nextPlayer = $scope.player2
-        renderBoard $scope.game.representation
+        refreshBoard()
+
+  refreshBoard = () ->
+    console.log 'refreshing board'
+    if $scope.game.next_player == $scope.player1._id
+      $scope.nextPlayer = $scope.player1
+    else
+      $scope.nextPlayer = $scope.player2
+    renderBoard $scope.game.representation
 
   $scope.selectGame = (id) ->
-    console.log 'in select game ' 
+    console.log 'in select game '
     $scope.game = Game.get { id: id }, () ->
-      refreshBoard()
+      refreshGame()
 
   $scope.getData = () ->
     $scope.players = Player.query()
-
-    $scope.game = Game.get {id: $routeParams.id}, () ->
-      refreshBoard()
 
   $scope.cellStyle =
     'height': '50px'
@@ -47,16 +48,17 @@ angular.module('app').controller 'nacController'
     $scope.winner = ''
 
   $scope.dropPiece = (row, col) ->
-    if not $scope.winner && not $scope.board[row][col]
+    move = row * 3 + col
 
-      $scope.board[row][col] = $scope.nextMove
-      if $scope.nextMove == 'X'
-        $scope.nextPlayer = $scope.player2
-        $scope.nextMove = 'O'
-      else
-        $scope.nextPlayer = $scope.player1
-        $scope.nextMove = 'X'
-      grade()
+    turn = 
+      player_id: $scope.player._id
+      turn_number: 1
+      moves: [move]
+
+    Turn.save {id: $scope.game._id}, turn, () ->
+      console.log 'turn saved, selecting game'
+      $scope.selectGame($scope.game._id)
+
 
   grade = () ->
     same = (a, b, c) ->
@@ -87,13 +89,15 @@ angular.module('app').controller 'nacController'
   renderBoard = (value) ->
     console.log(value)
     if value
-      for row_moves, row in value.split '|'
-        for move, column in row_moves.split ''
-          if move == '.'
+      i = 0
+      for row in [0..2]
+        for column in [0..2]
+          if value[i] == '.'
             $scope.board[row][column] = ''
           else
-            $scope.board[row][column] = move
-      console.log($scope.board)
+            $scope.board[row][column] = value[i]
+          i = i+1
+
       grade()
 
   $scope.getData()

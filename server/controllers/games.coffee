@@ -19,7 +19,6 @@ exports.show = (req, res) ->
     if err
       res.json 404
     else
-      game.board = "........."
       res.json 200, game
 
 exports.index = (req, res) ->

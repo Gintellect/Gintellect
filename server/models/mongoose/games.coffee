@@ -19,15 +19,41 @@ game_number: 'Number'
 , next_player: {type: ObjectId, ref: 'Player' }
 , turns: [turnSchema]}
 
-gameSchema.methods.takeTurn = (turn, callback) ->
-  if @next_player == turn.player_id
-    console.log 'correct person taking turn'
+gameSchema.methods.takeTurn = (turnJson, callback) ->
 
-    @turns.push turn
-    @save (err, game) ->
-      callback err game
+  turn = @turns.create(turnJson)
+  turn.turn_number = @turns.length + 1
+  if @next_player.toString() == turn.player_id.toString()
+    console.log 'correct person taking turn'
+    #check that the move is legal
+    space = parseInt(turn.moves[0],10)
+    spaceInc = space + 1
+    console.log 'spaceInc ' + spaceInc
+    
+    if @representation.charAt(space) == '.'
+      if @next_player.toString() == @players[0].toString()
+        console.log 'playing X in place ' + space.toString()
+        newRepresentation = @representation[0...space] +
+        'X' + @representation[spaceInc..]
+        @representation = newRepresentation
+        @next_player = @players[1]
+      else
+        console.log 'playing O in place ' + space
+        newRepresentation = @representation[0...space] +
+        'O' + @representation[spaceInc..]
+
+        console.log 'new representation ' + newRepresentation
+        @next_player = @players[0]
+   
+      @turns.push turn
+      @save (err, game) ->
+        callback err, game
+    else
+      console.log 'illegal move'
+      callback 'illegal move', @
   else
     console.log 'not your turn'
+    callback 'not your turn', @
 
 
 mongoose.model 'Games', gameSchema

@@ -1,14 +1,14 @@
 mongoose = require 'mongoose'
 
 Player = mongoose.model 'Player'
-Game = mongoose.model 'Games' 
+Game = mongoose.model 'Games'
 
 find = (options, callback) ->
   max = options?.max or 10000
   sort = options?.sort or {}
   query = options?.query or {}
   player = options?.player or {}
-  if player 
+  if player
     pl = new Player { _id : player }
     query.players = pl._id
 
@@ -24,10 +24,10 @@ create = (json, callback) ->
   player2 = new Player json.player_ids[1]
 
   obj.players.push player1
-  obj.players.push player2 
+  obj.players.push player2
   obj.next_player = player1
 
-  obj.representation = '...|...|...'
+  obj.representation = '.........'
 
   obj.save (err, game) ->
     callback err, game
@@ -46,6 +46,5 @@ findOneById = (id, callback) ->
 
 exports.findOneById = findOneById
 exports.create = create
-exports.takeTurn = takeTurn
 exports.destroy = destroy
 exports.find = find

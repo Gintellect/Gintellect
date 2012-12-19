@@ -1,5 +1,5 @@
 mongoose = require 'mongoose'
-User = mongoose.model 'Users' 
+User = mongoose.model 'Users'
 
 find = (options, callback) ->
   max = options?.max or 10000
