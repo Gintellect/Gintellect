@@ -41,8 +41,7 @@ gameSchema.methods.takeTurn = (turnJson, callback) ->
         console.log 'playing O in place ' + space
         newRepresentation = @representation[0...space] +
         'O' + @representation[spaceInc..]
-
-        console.log 'new representation ' + newRepresentation
+        @representation = newRepresentation
         @next_player = @players[0]
    
       @turns.push turn
