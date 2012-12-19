@@ -24,7 +24,7 @@ angular.module('app').config ['$routeProvider', '$locationProvider'
     templateUrl: '/views/players.html'
   .when '/user'
     controller: 'userController'
-    templateUrl: 'views/user.html'
+    templateUrl: '/views/user.html'
   .otherwise
     redirectTo: '/'
   $locationProvider.html5Mode(true)
