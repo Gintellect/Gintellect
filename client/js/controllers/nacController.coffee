@@ -5,6 +5,9 @@ angular.module('app').controller 'nacController'
   $scope.max = 10
 
   $scope.changeSelectedPlayer = () ->
+    refreshPlayerGames()
+
+  refreshPlayerGames = () ->
     $scope.games = Game.query { player: $scope.player._id }
 
   refreshGame = () ->
@@ -14,6 +17,10 @@ angular.module('app').controller 'nacController'
       , () ->
         refreshBoard()
 
+  $scope.selectGame = (id) ->
+    $scope.game = Game.get { id: id }, () ->
+      refreshGame()
+
   refreshBoard = () ->
     console.log 'refreshing board'
     if $scope.game.next_player == $scope.player1._id
@@ -21,11 +28,6 @@ angular.module('app').controller 'nacController'
     else
       $scope.nextPlayer = $scope.player2
     renderBoard $scope.game.representation
-
-  $scope.selectGame = (id) ->
-    console.log 'in select game '
-    $scope.game = Game.get { id: id }, () ->
-      refreshGame()
 
   $scope.createGame = () ->
     game = { game_number: 1
@@ -35,7 +37,13 @@ angular.module('app').controller 'nacController'
     , {_id: $scope.newplayer2._id }
     ] }
     Game.save game, () ->
-      $scope.getData()
+
+      refreshPlayerGames()
+
+  $scope.deleteGame = (id) ->
+    Game.delete {id: id}
+    , () ->
+      refreshPlayerGames()
 
   $scope.getData = () ->
     $scope.players = Player.query()

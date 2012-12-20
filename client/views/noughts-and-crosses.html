@@ -1,9 +1,11 @@
 <div class="row-fluid">
   <div class="span6">
     <h4>Noughts and Crosses</h4>
-    {{player1.name}}
-    vs
-    {{player2.name}}
+    Showing game: {{game.name}}
+    <br/>
+    {{player1.name}} vs {{player2.name}}
+    <br/>
+    <br/>
     <div>
       <div ng-hide="winner">
         Next Player: {{nextPlayer.name}} : {{nextMove}}
@@ -19,6 +21,7 @@
         </table>
       </div>
     </div>
+    <hr/>
     <h4>New Game</h4>
     <input ng-model="gameName" type="text"></input>
       
@@ -31,13 +34,18 @@
     <button class="btn btn-primary" ng-click="createGame()">Create Game</button>
   </div>
   <div class="span6">
-    <h4>Latest Games</h4>
+    <h4>Select current player</h4>
     <select ng-model="player" ng-change="changeSelectedPlayer()" ng-options="player.name for player in players">
     </select>
+    <hr/>
+    <h4>{{player.name}} games</h4>
     <div ng-repeat="game in games">
       <label>{{game.name}}</label>
       <button class="btn btn-info btn-small" ng-click="selectGame(game._id)">
         <i class="icon-white icon-play-circle"></i>
+      </button>
+      <button class="btn btn-danger btn-small" ng-click="deleteGame(game._id)">
+        <i class="icon-white icon-trash"></i>
       </button>
     </div>
   </div>
