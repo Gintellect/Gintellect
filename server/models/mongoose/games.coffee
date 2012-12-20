@@ -20,7 +20,6 @@ game_number: 'Number'
 , turns: [turnSchema]}
 
 gameSchema.methods.takeTurn = (turnJson, callback) ->
-
   turn = @turns.create(turnJson)
   turn.turn_number = @turns.length + 1
   if @next_player.toString() == turn.player_id.toString()

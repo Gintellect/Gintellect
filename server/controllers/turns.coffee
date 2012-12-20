@@ -11,10 +11,10 @@ exports.create = (req, res) ->
         if err
           res.json 200, {result: err}
         else
-          res.json 200, { 
+          res.json 200, {
             result: 0
             message: 'success'
             game: game
           }
-    else 
+    else
       res.json 404, { result: 'game not found '}

@@ -68,7 +68,7 @@ angular.module('app').controller 'nacController'
   $scope.dropPiece = (row, col) ->
     move = row * 3 + col
 
-    turn = 
+    turn =
       player_id: $scope.player._id
       turn_number: 1
       moves: [move]

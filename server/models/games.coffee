@@ -20,8 +20,7 @@ find = (options, callback) ->
 create = (json, callback) ->
   #annoying, but looks like this is what we need
   #to do to make it work, otherwise we get
-  #wierd prototype issues when we cast to obj  
- 
+  #wierd prototype issues when we cast to obj
   players = (new Player item for item in json.players)
   delete json.players
   obj = new Game json
