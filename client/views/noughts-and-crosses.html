@@ -19,6 +19,16 @@
         </table>
       </div>
     </div>
+    <h4>New Game</h4>
+    <input ng-model="gameName" type="text"></input>
+      
+    <select ng-model="newplayer1" ng-change="test()" ng-options="player.name for player in players">
+    </select>
+
+    <select ng-model="newplayer2" ng-options="player.name for player in players">
+    </select>
+
+    <button class="btn btn-primary" ng-click="createGame()">Create Game</button>
   </div>
   <div class="span6">
     <h4>Latest Games</h4>

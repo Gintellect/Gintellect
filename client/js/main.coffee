@@ -2,12 +2,6 @@ require
   shim:
     'libs/angular-resource': deps: [ 'libs/angular' ]
     'libs/bootstrap': deps: ['libs/jquery-1.8.3' ]
-    'controllers/gamesController':
-      deps: [
-        'libs/angular', 'app'
-        , 'services/gameService'
-        , 'services/playerService'
-      ]
     'controllers/loginController':
       deps: [
         'libs/angular', 'app'
@@ -86,7 +80,6 @@ require
     'controllers/usersController'
     'controllers/userController'
     'controllers/playersController'
-    'controllers/gamesController'
     'responseInterceptors/auth'
     'directives/authDirective'
     'routes'

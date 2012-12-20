@@ -27,6 +27,16 @@ angular.module('app').controller 'nacController'
     $scope.game = Game.get { id: id }, () ->
       refreshGame()
 
+  $scope.createGame = () ->
+    game = { game_number: 1
+    , name: $scope.gameName
+    , players: [ {
+    _id: $scope.newplayer1._id}
+    , {_id: $scope.newplayer2._id }
+    ] }
+    Game.save game, () ->
+      $scope.getData()
+
   $scope.getData = () ->
     $scope.players = Player.query()
 

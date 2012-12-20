@@ -52,7 +52,6 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="/user">My Account</a></li>
                                     <li><a href="/players">My Players</a></li>
-                                    <li><a href="/games">My Games</a></li>
                                 </ul>
                             </li>
                             <li ng-hide="loggedIn"><a href="/login">Login</a></li>
