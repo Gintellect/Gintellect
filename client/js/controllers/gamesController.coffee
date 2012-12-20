@@ -11,7 +11,7 @@ angular.module('app').controller 'gamesController'
   $scope.createGame = () ->
     game = { game_number: 1
     , name: $scope.gameName
-    , player_ids: [ {
+    , players: [ {
     _id: $scope.player1._id}
     , {_id: $scope.player2._id }
     ] }

@@ -18,14 +18,18 @@ find = (options, callback) ->
     Game.find(query).sort(sort).limit(max).populate('players').exec callback
 
 create = (json, callback) ->
+  #annoying, but looks like this is what we need
+  #to do to make it work, otherwise we get
+  #wierd prototype issues when we cast to obj  
+ 
+  players = (new Player item for item in json.players)
+  delete json.players
   obj = new Game json
-  
-  player1 = new Player json.player_ids[0]
-  player2 = new Player json.player_ids[1]
 
-  obj.players.push player1
-  obj.players.push player2
-  obj.next_player = player1
+  for player, index in players
+    obj.players.push player
+    if index is 0
+      obj.next_player = player
 
   obj.representation = '.........'
 
