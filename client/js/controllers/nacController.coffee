@@ -11,9 +11,9 @@ angular.module('app').controller 'nacController'
     $scope.games = Game.query { player: $scope.player._id }
 
   refreshGame = () ->
-    $scope.player1 = Player.get { id: $scope.game.players[0] }
+    $scope.player1 = Player.get { id: $scope.game.players[0]._id }
     , () ->
-      $scope.player2 = Player.get { id: $scope.game.players[1] }
+      $scope.player2 = Player.get { id: $scope.game.players[1]._id }
       , () ->
         refreshBoard()
 

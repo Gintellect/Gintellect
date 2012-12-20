@@ -44,7 +44,7 @@ destroy =  (id, callback) ->
         callback err
 
 findOneById = (id, callback) ->
-  Game.findOne { _id : id}, (err, game) ->
+  Game.findOne({ _id : id}).populate('players').exec (err, game) ->
     callback err, game
 
 exports.findOneById = findOneById
