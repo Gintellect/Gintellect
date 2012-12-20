@@ -5,6 +5,7 @@ angular.module('app').controller 'nacController'
   $scope.max = 10
 
   $scope.changeSelectedPlayer = () ->
+    $scope.reset()
     refreshPlayerGames()
 
   refreshPlayerGames = () ->
@@ -62,6 +63,10 @@ angular.module('app').controller 'nacController'
       ['', '', ''],
       ['', '', '']
     ]
+    $scope.player1 = null
+    $scope.player2 = null
+    $scope.nextPlayer = null
+    $scope.game = null
     $scope.nextMove = 'X'
     $scope.winner = ''
 
@@ -70,11 +75,9 @@ angular.module('app').controller 'nacController'
 
     turn =
       player_id: $scope.player._id
-      turn_number: 1
       moves: [move]
 
     Turn.save {id: $scope.game._id}, turn, () ->
-      console.log 'turn saved, selecting game'
       $scope.selectGame($scope.game._id)
 
 
