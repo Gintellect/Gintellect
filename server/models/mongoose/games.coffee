@@ -30,7 +30,7 @@ gameSchema.methods.takeTurn = (turnJson, callback) ->
     console.log 'spaceInc ' + spaceInc
     
     if @representation.charAt(space) == '.'
-      if @next_player.toString() == @players[0].toString()
+      if @next_player.toString() == @players[0]._id.toString()
         console.log 'playing X in place ' + space.toString()
         newRepresentation = @representation[0...space] +
         'X' + @representation[spaceInc..]
