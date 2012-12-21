@@ -18,7 +18,7 @@ app.configure ->
   
   dbUrl = "mongodb://" + conf.db.username +
   ':' + conf.db.password + '@' + conf.db.host +
-  ':' + conf.db.port + '/gintellect'
+  ':' + conf.db.port + '/' + conf.db.name
 
   mongoStoreOpts =
     url: dbUrl
@@ -30,7 +30,7 @@ app.configure ->
     cookie:
       maxAge: 1200000
     store: mongooseSessionStore
-    secret: process.env['GINTELLECT_SECRET'] || 'secret'
+    secret: conf.security.sessionSecret
 
   app.use express.session(sessionOpts)
 
