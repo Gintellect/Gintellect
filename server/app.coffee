@@ -40,7 +40,7 @@ app.configure ->
   #on all of our api routes
   app.use '/api', stack.noCache
   #configure all of the security settings
-  auth = require('gintellect-security')(app, users, conf.security)
+  auth = require('gint-security')(app, users, conf.security)
 
   #configure the routes
   routes app, dir, auth

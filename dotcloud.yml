@@ -1,5 +1,6 @@
 www:
     type: nodejs
+    prebuild: ./prebuild.sh
     processes:
         app: /home/dotcloud/current/node_modules/.bin/coffee ./server/server.coffee
     config:

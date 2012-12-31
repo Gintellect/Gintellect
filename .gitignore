@@ -13,10 +13,12 @@ results
 
 npm-debug.log
 
+components/
 node_modules/
 .dotcloud/
 dist/
 temp/
 .DS_Store
+prebuild.sh
 
 test/client/spec/

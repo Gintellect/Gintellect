@@ -19,7 +19,12 @@ module.exports = function (grunt) {
     // lint CoffeeScript
     coffeeLint: {
       scripts: {
-        src: ['./client/js/**/*.coffee','./server/**/*.coffee'],
+        src: ['./client/js/*.coffee'
+        , './client/js/controllers/*.coffee'
+        , './client/js/directives/*.coffee'
+        , './client/js/responseInterceptors/*.coffee'
+        , './client/js/services/*.coffee'
+        ,'./server/**/*.coffee'],
         indentation: {
           value: 2,
           level: 'error'
@@ -43,9 +48,25 @@ module.exports = function (grunt) {
     // compile CoffeeScript to JavaScript
     coffee: {
       scripts: {
+        files: {'./temp/client/js/': './client/js/*.coffee'},
+        bare: true
+      },
+      controllers: {
         files: {
-          './temp/client/js/': './client/js/**/*.coffee'
+          './temp/client/js/controllers': './client/js/controllers/*.coffee'
         },
+        bare: true
+      },
+      directives: {
+        files: {'./temp/client/js/directives': './client/js/directives/*.coffee'},
+        bare: true
+      },
+      responseInterceptors: {
+        files: {'./temp/client/js/responseInterceptors': './client/js/responseInterceptors/*.coffee'},
+        bare: true
+      },
+      services: {
+        files: {'./temp/client/js/services': './client/js/services/*.coffee'},
         bare: true
       },
       tests: {
@@ -100,8 +121,17 @@ module.exports = function (grunt) {
           'temp/client/js/libs/': 'client/js/libs/**',
           'temp/client/img/': 'client/img/**',
           'temp/client/views/': 'client/views/**',
+          'temp/client/js/libs/gint-security.js': 'client/js/components/gint-security/client/index.js',
           'temp/server/': 'server/**', 
-          'temp/': ['dotcloud.yml', 'package.json']
+          'temp/': ['dotcloud.yml', 'package.json', 'prebuild.sh']
+        }
+      },
+      components: {
+        files: {
+          'temp/client/views/gint-security/': 'client/js/components/gint-security/client/views/*.html'
+        },
+        options: {
+          basePath: 'views'
         }
       },
       dev: {
@@ -118,7 +148,7 @@ module.exports = function (grunt) {
           'dist/client/index.html': 'temp/client/index.min.html',
           'dist/client/views/': 'temp/client/views/**',
           'dist/server/': 'temp/server/**',
-          'dist/' : ['temp/dotcloud.yml', 'temp/package.json']
+          'dist/' : ['temp/dotcloud.yml', 'temp/package.json', 'temp/prebuild.sh']
         }
       },
       scripts: {
@@ -188,7 +218,7 @@ module.exports = function (grunt) {
 
     watch: {
       coffee: {
-        files: './client/js/**/*.coffee',
+        files: ['./client/js/*.coffee', './client/js/!(components)/*.coffee'],
         tasks: 'coffeeLint coffee copy:scripts reload'
       },
       less: {
@@ -254,6 +284,7 @@ module.exports = function (grunt) {
     'template:views',
     'template:dev',
     'copy:temp',
+    'copy:components',
     'copy:dev',
     'delete:temp'
   ]);
@@ -263,13 +294,14 @@ module.exports = function (grunt) {
 
   grunt.registerTask('prod', [
     'delete',
-    'coffeeLint:scripts',
-    'coffee:scripts',
+    'coffeeLint',
+    'coffee',
     'less',
     'template:views',
     'inlineTemplate',
     'template:prod',
     'copy:temp',
+    'copy:components',
     'requirejs',
     'minifyHtml',
     'copy:prod',
@@ -278,8 +310,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', [
     'default',
-    'coffeeLint:tests',
-    'coffee:tests',
     'jasmine-tests',
     'unit-tests',
     'e2e-tests'
