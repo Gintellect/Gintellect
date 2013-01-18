@@ -6,8 +6,15 @@ routes = require './routes'
 conf = require './conf'
 dir =  path.normalize __dirname + "/../client"
 stack = require './common/middleware'
+socket = require './socket'
 
 app = express()
+server = require('http').createServer(app)
+
+# Hook Socket.io into Express
+io = require('socket.io').listen(server)
+
+
 
 app.configure ->
   app.use express.favicon(dir + '/img/favicon.ico')
@@ -54,4 +61,11 @@ app.configure 'development', ->
 app.configure 'production', ->
   app.use express.errorHandler()
 
-module.exports = app
+port = process.env.PORT ? process.argv.splice(2)[0] ? 8080
+console.log 'listening on port ' + port
+
+io.sockets.on('connection', socket)
+
+module.exports = 
+  server: server
+  app: app

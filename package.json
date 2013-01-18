@@ -8,7 +8,8 @@
     "express": "~3.0.1",
     "mongoose": "~3.4.0",
     "session-mongoose": "~0.2.0",
-    "gint-security": "git+ssh://git@github.com:Gintellect/gint-security.git#v0.0.1"
+    "gint-security": "git+ssh://git@github.com:Gintellect/gint-security.git#v0.0.1",
+    "socket.io": "~0.9.13"
   },
   "devDependencies": {
     "grunt": "~0.3.17",

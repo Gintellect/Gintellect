@@ -64,6 +64,7 @@
 
         <div class="container" ng-view></div>
         <!-- endbuild -->
+        <script src="/socket.io/socket.io.js"></script>
         <% if (config.environment === 'prod') { %>
             <script src="/js/scripts.min.js?_=v<%= config.uniqueVersion() %>"></script>
         <% } else { %>

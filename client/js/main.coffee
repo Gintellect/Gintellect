@@ -4,69 +4,53 @@ require
     'libs/bootstrap': deps: ['libs/jquery-1.8.3' ]
     'controllers/loginController':
       deps: [
-        'libs/angular', 'app'
+        'app'
         , 'responseInterceptors/auth'
       ]
     'controllers/logoutController':
       deps: [
-        'libs/angular', 'app'
+        'app'
         , 'responseInterceptors/auth'
       ]
     'controllers/mainController':
       deps: [
-        'libs/angular', 'app'
+        'app'
         , 'responseInterceptors/auth'
       ]
     'controllers/nacController':
       deps: [
-        'libs/angular', 'app'
+        'app'
         , 'services/gameService'
         , 'services/userService'
         , 'services/playerService'
       ]
     'controllers/playersController':
       deps: [
-        'libs/angular', 'app'
+        'app'
         , 'services/playerService'
       ]
     'controllers/userController':
       deps: [
-        'libs/angular', 'app'
+        'app'
         , 'services/userAccountService'
       ]
     'controllers/usersController':
       deps: [
-        'libs/angular', 'app'
+        'app'
         , 'services/userService'
       ]
-    'directives/authDirective':
+    'controllers/socket':
       deps: [
-        'libs/angular', 'app'
+        'app'
+        , 'services/socket'
       ]
-    'responseInterceptors/auth':
-      deps: [
-        'libs/angular', 'app'
-      ]
-    'services/gameService':
-      deps: [
-        'libs/angular', 'app'
-        , 'libs/angular-resource'
-      ]
-    'services/playerService':
-      deps: [
-        'libs/angular', 'app'
-        , 'libs/angular-resource'
-      ]
-    'services/userAccountService':
-      deps: [
-        'libs/angular', 'app'
-        , 'libs/angular-resource'
-      ]
-    'services/userService':
-      deps: [
-        'libs/angular', 'app'
-        , 'libs/angular-resource'
-      ]
+    'directives/authDirective': deps: ['app']
+    'responseInterceptors/auth': deps: ['app']
+    'services/gameService': deps: ['app']
+    'services/playerService': deps: ['app']
+    'services/userAccountService': deps: ['app']
+    'services/userService': deps: ['app']
+    'services/socket': deps: ['app']
     'app': deps: ['libs/angular', 'libs/angular-resource']
     'bootstrap': deps: ['libs/angular', 'app']
     'routes': deps: ['libs/angular', 'app']
@@ -80,6 +64,7 @@ require
     'controllers/usersController'
     'controllers/userController'
     'controllers/playersController'
+    'controllers/socket'
     'responseInterceptors/auth'
     'directives/authDirective'
     'routes'

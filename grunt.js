@@ -248,7 +248,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('server', 'Start the express app.', function() {
     grunt.log.writeln('Starting Gintellect server');
-    var server = require('./dist/server/app').listen(3005);
+    var server = require('./dist/server/app').server.listen(3005);
   })
 
   grunt.registerTask('unit-tests', 'run the testacular test driver on jasmine unit tests', function () {
