@@ -1,4 +1,5 @@
 mongoose = require 'mongoose'
+require './mongoose/players'
 Player = mongoose.model 'Player'
 
 find = (options, callback) ->

@@ -6,11 +6,6 @@ module.exports = (app, dir, auth) ->
   # json/api routes
   #
 
-  # userAction routes
-  app.get     '/api/user',            auth.userAction,      api.users.showMe
-  app.put     '/api/user',            auth.userAction,      api.users.updateMe
-  app.delete  '/api/user',            auth.userAction,      api.users.destroyMe
-
   app.get     '/api/players',         auth.userAction,      api.players.index
   app.post    '/api/players',         auth.userAction,      api.players.create
   app.get     '/api/players/:id',     auth.userAction,      api.players.show
@@ -22,10 +17,6 @@ module.exports = (app, dir, auth) ->
   app.post    '/api/games',           auth.userAction,      api.games.create
 
   app.post    '/api/games/:id/turns', auth.userAction,      api.turns.create
-
-  # sysAdminAction routes
-  app.get     '/api/users',           auth.sysAdminAction,  api.users.index
-  app.delete  '/api/users/:id',       auth.sysAdminAction,  api.users.destroy
 
   #all other request routes will be handled by angular on the server
   #so we return the single page app and let the client handle the rest

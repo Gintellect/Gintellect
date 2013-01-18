@@ -1,5 +1,6 @@
 mongoose = require 'mongoose'
-
+require './mongoose/games'
+require './mongoose/players'
 Player = mongoose.model 'Player'
 Game = mongoose.model 'Games'
 

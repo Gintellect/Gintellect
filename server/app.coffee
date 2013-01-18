@@ -5,7 +5,6 @@ path = require 'path'
 routes = require './routes'
 conf = require './conf'
 dir =  path.normalize __dirname + "/../client"
-users = require('./models/models').users
 stack = require './common/middleware'
 
 app = express()
@@ -16,9 +15,12 @@ app.configure ->
   app.use express.cookieParser()
   app.use express.bodyParser()
   
-  dbUrl = "mongodb://" + conf.db.username +
-  ':' + conf.db.password + '@' + conf.db.host +
-  ':' + conf.db.port + '/' + conf.db.name
+  dbUrl =
+  "mongodb://" + conf.db.username +
+  ':' + conf.db.password +
+  '@' + conf.db.host +
+  ':' + conf.db.port +
+  '/' + conf.db.name
 
   mongoStoreOpts =
     url: dbUrl
@@ -40,7 +42,8 @@ app.configure ->
   #on all of our api routes
   app.use '/api', stack.noCache
   #configure all of the security settings
-  auth = require('gint-security')(app, users, conf.security)
+  mongoose = require('mongoose')
+  auth = require('gint-security')(app, mongoose, conf.security)
 
   #configure the routes
   routes app, dir, auth
