@@ -23,6 +23,7 @@ require
         , 'services/gameService'
         , 'services/userService'
         , 'services/playerService'
+        , 'services/socket'
       ]
     'controllers/playersController':
       deps: [
@@ -38,11 +39,6 @@ require
       deps: [
         'app'
         , 'services/userService'
-      ]
-    'controllers/socket':
-      deps: [
-        'app'
-        , 'services/socket'
       ]
     'directives/authDirective': deps: ['app']
     'responseInterceptors/auth': deps: ['app']
@@ -64,7 +60,6 @@ require
     'controllers/usersController'
     'controllers/userController'
     'controllers/playersController'
-    'controllers/socket'
     'responseInterceptors/auth'
     'directives/authDirective'
     'routes'

@@ -1,8 +1,20 @@
 angular.module('app').controller 'nacController'
 , ['$scope', '$location', '$routeParams'
-, 'Game', 'Turn', 'User', 'Player'
-, ($scope, $location, $routeParams, Game, Turn, User, Player) ->
+, 'Socket', 'Game', 'Turn', 'User', 'Player'
+, ($scope, $location, $routeParams, Socket, Game, Turn, User, Player) ->
   $scope.max = 10
+
+  $scope.$watch 'game._id', (newVal, oldVal) ->
+    if oldVal
+      console.log 'stop watching: ' + oldVal
+      Socket.emit 'unwatch:game', {id: oldVal}
+    if newVal
+      console.log 'start watching: ' + newVal
+      Socket.emit 'watch:game', {id: newVal}
+
+  Socket.on 'move:played', (data) ->
+    console.log 'a move was played by your opponent!!'
+    refreshGame(data.id)
 
   $scope.changeSelectedPlayer = () ->
     $scope.reset()
@@ -11,16 +23,17 @@ angular.module('app').controller 'nacController'
   refreshPlayerGames = () ->
     $scope.games = Game.query { player: $scope.player._id }
 
-  refreshGame = () ->
-    $scope.player1 = Player.get { id: $scope.game.players[0]._id }
-    , () ->
-      $scope.player2 = Player.get { id: $scope.game.players[1]._id }
+  refreshGame = (id) ->
+    Game.get { id: id }, (game) ->
+      $scope.game = game
+      $scope.player1 = Player.get { id: $scope.game.players[0]._id }
       , () ->
-        refreshBoard()
+        $scope.player2 = Player.get { id: $scope.game.players[1]._id }
+        , () ->
+          refreshBoard()
 
   $scope.selectGame = (id) ->
-    $scope.game = Game.get { id: id }, () ->
-      refreshGame()
+    refreshGame(id)
 
   refreshBoard = () ->
     console.log 'refreshing board'
@@ -78,8 +91,8 @@ angular.module('app').controller 'nacController'
       moves: [move]
 
     Turn.save {id: $scope.game._id}, turn, () ->
+      Socket.emit 'play:move', {id: $scope.game._id}
       $scope.selectGame($scope.game._id)
-
 
   grade = () ->
     same = (a, b, c) ->

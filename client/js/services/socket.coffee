@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app').factory 'socket'
+angular.module('app').factory 'Socket'
 , ($rootScope) ->
   socket = io.connect()
   on: (eventName, callback) ->
