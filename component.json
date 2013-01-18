@@ -2,6 +2,6 @@
   "name": "gintellect",
   "version": "0.0.0",
   "dependencies": {
-    "gint-security": "git@github.com:Gintellect/gint-security.git#~0.0.1"
+    "gint-security": "git@github.com:Gintellect/gint-security.git#~0.0.2"
   }
 }
