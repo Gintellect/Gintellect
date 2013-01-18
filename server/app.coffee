@@ -66,6 +66,6 @@ console.log 'listening on port ' + port
 
 io.sockets.on('connection', socket)
 
-module.exports = 
+module.exports =
   server: server
   app: app

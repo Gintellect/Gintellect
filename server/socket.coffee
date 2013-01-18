@@ -1,6 +1,6 @@
-# 
+#
 # Serve content over a socket
-# 
+#
 
 module.exports = (socket) ->
   socket.on 'watch:game', (data) ->

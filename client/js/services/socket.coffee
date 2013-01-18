@@ -5,7 +5,7 @@ angular.module('app').factory 'Socket'
 , ($rootScope) ->
   socket = io.connect()
   on: (eventName, callback) ->
-    socket.on eventName, () ->  
+    socket.on eventName, () -> 
       args = arguments
       $rootScope.$apply () ->
         callback.apply socket, args
